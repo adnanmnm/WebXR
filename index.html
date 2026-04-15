@@ -1,28 +1,21 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WebAR Demo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AR Test</title>
 
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <!-- model-viewer -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
 
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      font-family: Arial;
       text-align: center;
-    }
-
-    h1 {
-      margin: 20px 0 10px;
-      font-size: 24px;
-    }
-
-    p {
-      margin: 0 20px 20px;
-      color: #555;
+      background: #f4f4f4;
     }
 
     model-viewer {
@@ -31,65 +24,48 @@
       background: #fff;
     }
 
-    .info-box {
-      margin: 15px auto;
-      max-width: 800px;
-      padding: 15px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 18px;
+    button {
+      padding: 12px 20px;
+      margin: 15px;
+      font-size: 16px;
+      border: none;
       border-radius: 10px;
-      text-decoration: none;
-      background: #222;
+      background: black;
       color: white;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-  <h1>AR Building Demo</h1>
-  <p>Scan QR → Open page → View model in AR</p>
+<h2>AR Working Test</h2>
 
-  <model-viewer
-    id="arModel"
-    src="building.glb"
-    ios-src="building.usdz"
-    alt="3D Building Model"
-    ar
-    ar-modes="webxr scene-viewer quick-look"
-    camera-controls
-    auto-rotate
-    shadow-intensity="1"
-    exposure="1"
-    environment-image="neutral"
-    poster=""
-    loading="eager"
-    reveal="auto">
-  </model-viewer>
+<model-viewer
+  id="mv"
+  src="building.glb"
+  alt="3D Model"
+  ar
+  ar-modes="scene-viewer webxr quick-look"
+  camera-controls
+  auto-rotate
+  shadow-intensity="1"
+  exposure="1"
+  environment-image="neutral">
+</model-viewer>
 
-  <div class="info-box">
-    <h2>Project Information</h2>
-    <p>This model can be used for smart city, digital twin, and urban visualization scenarios.</p>
-    <a class="btn" href="#" onclick="openAR()">Open AR</a>
-  </div>
+<button onclick="openAR()">Open AR</button>
 
-  <script>
-    function openAR() {
-      const modelViewer = document.querySelector("#arModel");
-      if (modelViewer.activateAR) {
-        modelViewer.activateAR();
-      } else {
-        alert("AR is not supported on this device/browser.");
-      }
-    }
-  </script>
+<script>
+function openAR() {
+  const mv = document.getElementById("mv");
+
+  if (mv.canActivateAR) {
+    mv.activateAR();
+  } else {
+    alert("AR not supported OR model issue");
+    console.log("AR supported:", mv.canActivateAR);
+  }
+}
+</script>
 
 </body>
 </html>
