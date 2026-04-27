@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AR Model Selector</title>
+
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f4f4f4;
+    }
+
+    #home {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    #viewerPage {
+      display: none;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #555;
+      font-size: 17px;
+      max-width: 600px;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 78vh;
+      background: #fff;
+    }
+
+    button {
+      padding: 12px 22px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background: black;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #333;
+    }
+
+    .secondary {
+      background: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Welcome / Options Page -->
+  <div id="home">
+    <h1>Welcome to AR Experience</h1>
+    <p>Please choose one of the 3D models below to view it in AR.</p>
+
+    <div>
+      <button onclick="showModel('robot')">Show Robot</button>
+      <button onclick="showModel('earth')">Show Earth</button>
+    </div>
+  </div>
+
+  <!-- Model Viewer Page -->
+  <div id="viewerPage">
+    <h2 id="modelTitle">3D Model</h2>
+
+    <model-viewer
+      id="mv"
+      src=""
+      alt="3D Model"
+      ar
+      ar-modes="scene-viewer webxr quick-look"
+      camera-controls
+      auto-rotate
+      shadow-intensity="1"
+      exposure="1"
+      environment-image="neutral">
+    </model-viewer>
+
+    <button onclick="openAR()">Open AR</button>
+    <button class="secondary" onclick="goBack()">Back</button>
+  </div>
+
+<script>
+const models = {
+  robot: {
+    title: "Robot Model",
+    src: "Astronaut.glb"
+  },
+  earth: {
+    title: "Earth Model",
+    src: "https://gcoojfwdncvkbsrxdhxe.supabase.co/storage/v1/object/public/models/earth.glb"
+  }
+};
+
+function showModel(type) {
+  const mv = document.getElementById("mv");
+  const title = document.getElementById("modelTitle");
+
+  mv.src = models[type].src;
+  title.innerText = models[type].title;
+
+  document.getElementById("home").style.display = "none";
+  document.getElementById("viewerPage").style.display = "block";
+}
+
+function goBack() {
+  const mv = document.getElementById("mv");
+
+  mv.pause();
+  mv.src = "";
+
+  document.getElementById("viewerPage").style.display = "none";
+  document.getElementById("home").style.display = "flex";
+}
+
+function openAR() {
+  const mv = document.getElementById("mv");
+
+  if (mv.canActivateAR) {
+    mv.activateAR();
+  } else {
+    alert("AR not supported OR model issue");
+    console.log("AR supported:", mv.canActivateAR);
+  }
+}
+</script>
+
+</body>
+</html>
